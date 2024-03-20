@@ -4,8 +4,7 @@ module Banshy
       super 'com.mordrec.banshy', Gio::ApplicationFlags::FLAGS_NONE
 
       signal_connect :activate do |application|
-        window = Gtk::ApplicationWindow.new(application)
-        window.set_title 'Banshy!'
+        window = Banshy::ApplicationWindow.new(application)
         window.present
       end
     end
