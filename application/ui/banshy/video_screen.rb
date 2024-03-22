@@ -1,11 +1,14 @@
+# frozen_string_literal: true
+
 module Banshy
-  class VideoScreen < Gtk::DrawingArea
-    FLAG_NONE        = 0   # Sin banderas
-    FLAG_FLUSH       = 1   # Vacía todos los buffers después de la posición de búsqueda
-    FLAG_ACCURATE    = 2   # Búsqueda precisa
-    FLAG_KEY_UNIT    = 4   # Busca en unidades clave
-    FLAG_SEGMENT     = 8   # Trata de ajustarse al segmento
-    FLAG_SKIP        = 16  # Salta frames para buscar
+  # class for playing video files
+  class VideoScreen
+    FLAG_NONE        = 0   # No flags
+    FLAG_FLUSH       = 1   # Empties buffers after seek positioning
+    FLAG_ACCURATE    = 2   # Accurate seek
+    FLAG_KEY_UNIT    = 4   # Search in key units (Whatever it means)
+    FLAG_SEGMENT     = 8   # Tries to adjust to the segment
+    FLAG_SKIP        = 16  # Jumps frames to seek
     FLAG_SNAP_BEFORE = 32  # Busca a la posición más cercana antes del valor de búsqueda
     FLAG_SNAP_AFTER  = 64  # Busca a la posición más cercana después del valor de búsqueda
     FLAG_TRICKMODE   = 128 # Reproducción en modo truco
@@ -14,14 +17,7 @@ module Banshy
     TYPE_SET  = 1
     TYPE_CUR  = 2
 
-    type_register
     attr_accessor :playing
-
-    class << self
-      def init
-        set_template resource: '/com/mordrec/banshy/ui/video_screen.ui'
-      end
-    end
 
     def initialize(media_file)
       super()
@@ -29,7 +25,9 @@ module Banshy
       @pipeline = Gst::ElementFactory.make('playbin')
       @pipeline.uri = @media_file.src_path
       @pipeline.video_sink = Gst::ElementFactory.make('gtksink', 'sink')
+      @pipeline.audio_sink = Gst::ElementFactory.make('alsasink')
       @playing = false
+      @pipeline.ready
     end
 
     def widget
@@ -57,16 +55,14 @@ module Banshy
 
     def move_to_position(percentage)
       aux_duration = duration != -1 ? duration : @media_file.duration_seconds
-      seconds = ((percentage.to_f / 100 ) * aux_duration).round
-      puts "seconds: #{seconds} percentage:#{percentage}"
-      puts @pipeline.seek(1.0,
-                    Gst::Format::TIME,
-                    FLAG_KEY_UNIT | FLAG_FLUSH | FLAG_SEGMENT,
-                    TYPE_SET,
-                    seconds * Gst::SECOND,
-                    TYPE_NONE,
-                    -1)
-      puts current_position
+      seconds = ((percentage.to_f / 100) * aux_duration).round
+      @pipeline.seek(1.0,
+                     Gst::Format::TIME,
+                     FLAG_KEY_UNIT | FLAG_FLUSH | FLAG_SEGMENT,
+                     TYPE_SET,
+                     seconds * Gst::SECOND,
+                     TYPE_NONE,
+                     -1)
     end
 
     def current_position
