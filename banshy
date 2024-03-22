@@ -2,10 +2,12 @@
 
 require 'gtk3'
 require 'fileutils'
+require 'gstreamer'
+require 'glib2'
 
 # Require all ruby files in the application folder recursively
 application_root_path = File.expand_path(__dir__)
-Dir[File.join(application_root_path,'**','*.rb')].each { |file| require file }
+Dir[File.join(application_root_path,'application/**','*.rb')].each { |file| require file }
 
 # Define the source & target files of the glib-compile-resources command
 resource_xml = File.join(application_root_path, 'resources', 'gresources.xml')
@@ -17,8 +19,7 @@ system('glib-compile-resources',
        '--sourcedir', File.dirname(resource_xml),
        resource_xml)
 
-Gio::Resource.load resource_bin
-Gio::Resources.register resource
+Gio::Resources.register Gio::Resource.load(resource_bin)
 
 at_exit do
   # Before exiting, please remove the binary we produced, thanks
