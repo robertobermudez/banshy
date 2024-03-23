@@ -1,31 +1,30 @@
 #!/usr/bin/env ruby
-
-require 'gtk3'
-require 'fileutils'
-require 'gstreamer'
-require 'glib2'
-
+require './configuration'
 # Require all ruby files in the application folder recursively
-application_root_path = File.expand_path(__dir__)
-Dir[File.join(application_root_path,'application/**','*.rb')].each { |file| require file }
+Dir[File.join(APP_ROOT_PATH, 'application/**', '*.rb')].each { |file| require file }
 
 # Define the source & target files of the glib-compile-resources command
-resource_xml = File.join(application_root_path, 'resources', 'gresources.xml')
-resource_bin = File.join(application_root_path, 'gresource.bin')
 
 # Build the binary
 system('glib-compile-resources',
-       '--target', resource_bin,
-       '--sourcedir', File.dirname(resource_xml),
-       resource_xml)
+       '--target', RESOURCE_BIN,
+       '--sourcedir', File.dirname(RESOURCE_XML),
+       RESOURCE_XML)
 
-Gio::Resources.register Gio::Resource.load(resource_bin)
+Gio::Resources.register Gio::Resource.load RESOURCE_BIN
+
+# Create files foler
+FileUtils.mkdir_p PATH_FILES
+
+ActiveRecord::Base.establish_connection(
+  adapter: 'sqlite3',
+  database: File.join(PATH_FILES, 'data.db')
+)
 
 at_exit do
   # Before exiting, please remove the binary we produced, thanks
-  FileUtils.rm_f resource_bin
+  FileUtils.rm_f RESOURCE_BIN
 end
-
 
 app = Banshy::Application.new
 puts app.run
