@@ -1,9 +1,13 @@
 module Banshy
   class ProgressControlHandler
     attr_reader :time_label, :prog_adj, :buffer, :update_timer
-    def initialize(time_label, prog_adj, buffer)
+    def initialize(time_label, prog_adj)
       @time_label = time_label
       @prog_adj = prog_adj
+      @buffer = nil
+    end
+
+    def init_buffer(buffer)
       @buffer = buffer
     end
 
@@ -27,7 +31,7 @@ module Banshy
     private
 
     def update_progress_adjustement
-      percentage = ((@buffer.current_position.to_f / @buffer.duration) * 100).round(2)
+      percentage = ((@buffer.current_position.to_f / @buffer.duration_seconds) * 100).round(2)
       prog_adj.value = percentage
     end
 

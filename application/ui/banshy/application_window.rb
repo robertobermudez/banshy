@@ -1,12 +1,9 @@
-require 'pry'
 module Banshy
   class ApplicationWindow < Gtk::ApplicationWindow
     type_register
     class << self
       def init
         set_template resource: '/com/mordrec/banshy/ui/application_window.ui'
-        bind_template_child 'menu_bar'
-        bind_template_child 'swap_area'
         bind_template_child 'side_view'
         bind_template_child 'button_play'
         bind_template_child 'button_pause'
@@ -14,43 +11,74 @@ module Banshy
         bind_template_child 'progress_adjustement'
         bind_template_child 'time_label'
         bind_template_child 'progress_label'
+        bind_template_child 'import_media_option'
+        bind_template_child 'grid_2'
+        bind_template_child 'media_name_label'
       end
     end
 
     def initialize(application)
       super(application: application)
       set_title "Banshy!"
-      @media_file = MediaFile.new(
-        '/home/mordrec/workspace/banshy/test/media/BigBuckBunny.mp4')
-      @video_screen = Banshy::VideoScreen.new(@media_file)
-      swap_area.add @video_screen.widget
+      @video_screen = Banshy::VideoScreen.new
+      @media_display = MediaListDisplay.new
+      @buffer = nil
+      grid_2.attach @media_display, 1, 0, 1, 1
       set_progress_control
       init_behaviors
       set_time_label
       show_all
     end
 
+    def menu_bar_behavior
+      import_media_option.signal_connect 'activate' do
+        ImportMediaWindow.new
+      end
+    end
+
+    def set_time_label
+      time_label.text = '00:00:00'
+      progress_label.text = '00:00:00'
+    end
+
     def init_behaviors
       play_behavior
       pause_behavior
       progress_control_behavior
-    end
-
-    def set_time_label
-      time_label.text = @media_file.duration
-      progress_label.text = '00:00:00'
+      menu_bar_behavior
     end
 
     def play_behavior
       button_play.signal_connect 'clicked' do
-        @video_screen.play
-        @progress_control_handler.start_update_timer
+        load_video_buffer
+        if @buffer&.ready                              # Safe navigation operator equals to
+          @buffer.play                                 # @buffer && @buffer.ready
+          @progress_control_handler.start_update_timer # Qué cosas mas modernas y que viejo estoy ya
+        end
       end
+    end
+
+    def load_video_buffer
+      unless @buffer&.file == @media_display.selected
+        selected = @media_display.selected
+        @buffer = @video_screen
+        @buffer.load_video selected
+        @progress_control_handler.init_buffer @buffer
+        switch_to_screen
+        media_name_label.text = @buffer.name
+        time_label.text = @buffer.duration
+      end
+    end
+
+    def switch_to_screen
+      grid_2.remove @media_display
+      grid_2.attach @video_screen, 1, 0, 1, 1
+      show_all
     end
 
     def pause_behavior
       button_pause.signal_connect 'clicked' do
-        @video_screen.pause
+        @buffer.pause
         @progress_control_handler.stop_update_timer
       end
     end
@@ -58,21 +86,20 @@ module Banshy
     def progress_control_behavior
       was_playing = nil
       progress_control.signal_connect 'change-value' do
-        was_playing ||= @video_screen.is_playing?
-        @video_screen.pause if @video_screen.is_playing?
+        was_playing ||= @buffer.is_playing?
+        @buffer.pause if @buffer.is_playing?
       end
 
       progress_control.signal_connect_after 'change-value' do
-        @video_screen.play if was_playing
-        @video_screen.move_to_position progress_control.value
+        @buffer.play if was_playing
+        @buffer.move_to_position progress_control.value
         was_playing = nil
       end
     end
 
     def set_progress_control
       @progress_control_handler = ProgressControlHandler.new(progress_label,
-                                                     progress_adjustement,
-                                                     @video_screen)
+                                                             progress_adjustement)
     end
 
     private
