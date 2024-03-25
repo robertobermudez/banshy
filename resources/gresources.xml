@@ -2,6 +2,10 @@
 <gresources>
   <gresource prefix="/com/mordrec/banshy">
     <file preprocess="xml-stripblanks">ui/application_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/media_box_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/media_list_display.ui</file>
+    <file preprocess="xml-stripblanks">ui/video_screen.ui</file>
+    <file preprocess="xml-stripblanks">ui/media_tree_view.ui</file>
   </gresource>
 </gresources>
 
