@@ -27,11 +27,13 @@ namespace :migrate do
     require './migrations'
     connect_db
     CreateVideoFileTable.migrate :up
+    CreateMusicFileTable.migrate :up
   end
   task :down do
     require './migrations'
     connect_db
-    CreateVideoFileTable.migrate(:down)
+    CreateVideoFileTable.migrate :down
+    CreateMusicFileTable.migrate :down
   end
 end
 
@@ -40,11 +42,13 @@ namespace :migrate_test do
     require './migrations'
     connect_test_db
     CreateVideoFileTable.migrate :up
+    CreateMusicFileTable.migrate :up
   end
   task :down do
     require './migrations'
     connect_test_db
-    CreateVideoFileTable.migrate(:down)
+    CreateVideoFileTable.migrate :down
+    CreateMusicFileTable.migrate :down
   end
 end
 
