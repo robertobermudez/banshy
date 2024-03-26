@@ -13,21 +13,35 @@ module Banshy
     def initialize
       super()
       load_videos
-      @selected = nil
       select_handler
     end
 
     def load_videos
-      media_list_box.children.each { |child| todo_items_list_box.remove child }
+      clean_display
       VideoFile.all.each do |file|
         media_list_box.add MediaBoxRow.new(file)
       end
     end
 
-    def select_handler
-      media_list_box.signal_connect 'row-selected' do |widget, row|
-        @selected = row.media_item
+    def load_music
+      clean_display
+      MusicFile.all.each do |file|
+        media_list_box.add MediaBoxRow.new(file)
       end
+    end
+
+    def select_handler
+      media_list_box.signal_connect('row-selected') do |widget, row|
+        @selected = row&.media_item
+      end
+    end
+
+    private
+
+    def clean_display
+      media_list_box.unselect_all
+      @selected = nil
+      media_list_box.children.each { |child| media_list_box.remove child }
     end
   end
 end
