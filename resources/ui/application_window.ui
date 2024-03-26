@@ -396,64 +396,7 @@ audio-volume-medium-symbolic</property>
             <property name="hexpand">True</property>
             <property name="vexpand">True</property>
             <child>
-              <object class="GtkScrolledWindow">
-                <property name="width-request">239</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="vexpand">True</property>
-                <property name="hscrollbar-policy">never</property>
-                <property name="shadow-type">in</property>
-                <child>
-                  <object class="GtkViewport">
-                    <property name="width-request">225</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="vexpand">True</property>
-                    <child>
-                      <object class="GtkTreeView" id="media_tree_view">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="hexpand">False</property>
-                        <property name="vexpand">False</property>
-                        <property name="search-column">0</property>
-                        <property name="enable-grid-lines">horizontal</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="media_groups">
-                            <property name="resizable">True</property>
-                            <property name="title" translatable="yes">Media</property>
-                            <property name="expand">True</property>
-                            <property name="clickable">True</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="cr1"/>
-                              <attributes>
-                                <attribute name="visible">6</attribute>
-                                <attribute name="wrap-width">6</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn" id="playlists">
-                            <property name="resizable">True</property>
-                            <property name="title" translatable="yes">column 2</property>
-                            <property name="expand">True</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="cr2"/>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="left-attach">0</property>
-                <property name="top-attach">0</property>
-              </packing>
+              <placeholder/>
             </child>
             <child>
               <placeholder/>
@@ -469,12 +412,4 @@ audio-volume-medium-symbolic</property>
       </object>
     </child>
   </template>
-  <object class="GtkTreeStore" id="tree_store">
-    <columns>
-      <!-- column-name media_groups -->
-      <column type="gchararray"/>
-      <!-- column-name playlists -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
 </interface>

@@ -17,35 +17,20 @@
         <property name="can-focus">False</property>
         <property name="vexpand">True</property>
         <child>
-          <object class="GtkTreeView" id="media_tree_view">
+          <object class="GtkTreeView" id="tree_view">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="hexpand">False</property>
-            <property name="vexpand">False</property>
-            <property name="search-column">0</property>
-            <property name="enable-grid-lines">horizontal</property>
-            <child>
-              <object class="GtkTreeViewColumn" id="media_groups">
-                <property name="resizable">True</property>
-                <property name="title" translatable="yes">Media</property>
-                <property name="expand">True</property>
-                <property name="clickable">True</property>
-                <child>
-                  <object class="GtkCellRendererText" id="cr1"/>
-                  <attributes>
-                    <attribute name="visible">6</attribute>
-                    <attribute name="wrap-width">6</attribute>
-                  </attributes>
-                </child>
-              </object>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection" id="tree_selection"/>
             </child>
             <child>
-              <object class="GtkTreeViewColumn" id="playlists">
-                <property name="resizable">True</property>
-                <property name="title" translatable="yes">column 2</property>
-                <property name="expand">True</property>
+              <object class="GtkTreeViewColumn" id="options_col">
+                <property name="title" translatable="yes">Options</property>
                 <child>
-                  <object class="GtkCellRendererText" id="cr2"/>
+                  <object class="GtkCellRendererText" id="cr_options"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
                 </child>
               </object>
             </child>
@@ -54,4 +39,10 @@
       </object>
     </child>
   </template>
+  <object class="GtkTreeStore" id="tree_store">
+    <columns>
+      <!-- column-name media_type -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
 </interface>
