@@ -36,7 +36,8 @@ module Banshy
     end
 
     def update_progress_label
-      @time_label.text = time_format @buffer.current_position
+      current_pos = @buffer.current_position
+      @time_label.text = current_pos >= 0 ? time_format(current_pos) : 'Loading...'
     end
 
     def time_format(seconds)
