@@ -74,6 +74,14 @@ module Banshy
       ready && file
     end
 
+    def get_volume
+      @pipeline.volume
+    end
+
+    def set_volume(val)
+      @pipeline.set_volume val
+    end
+
     def stop
       @pipeline.stop
       @playing = false
@@ -106,6 +114,10 @@ module Banshy
 
     def duration_seconds
       @pipeline.query_duration(Gst::Format::TIME).last / Gst::SECOND
+    end
+
+    def finished?
+      current_position == duration_seconds && duration_seconds != -1
     end
 
     private

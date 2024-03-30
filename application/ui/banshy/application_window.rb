@@ -6,6 +6,8 @@ module Banshy
         set_template resource: '/com/mordrec/banshy/ui/application_window.ui'
         bind_template_child 'button_play'
         bind_template_child 'button_pause'
+        bind_template_child 'button_previous'
+        bind_template_child 'button_next'
         bind_template_child 'progress_control'
         bind_template_child 'progress_adjustement'
         bind_template_child 'time_label'
@@ -14,6 +16,11 @@ module Banshy
         bind_template_child 'open_file_option'
         bind_template_child 'grid_2'
         bind_template_child 'media_name_label'
+        bind_template_child 'volume_control'
+        bind_template_child 'sequential_next'
+        bind_template_child 'random_next'
+        bind_template_child 'automatic_forward'
+        bind_template_child 'media_search'
       end
     end
 
@@ -23,6 +30,7 @@ module Banshy
       super(application: application)
       set_title 'Banshy!'
       @screen_active = false
+      @random_forward = false
       attach_components
       set_progress_control
       init_handlers
@@ -33,7 +41,8 @@ module Banshy
     def attach_components
       @buffer = Banshy::MediaPlayer.new
       @tree_view = MediaTreeView.new self
-      @media_display = MediaListDisplay.new
+      @media_display = MediaListDisplay.new(media_search)
+      @automatic_forwarder = AutomaticForwarder.new(self, buffer)
       grid_2.attach @tree_view, 0, 0, 1, 1
       grid_2.attach @media_display, 1, 0, 1, 1
     end
@@ -46,8 +55,29 @@ module Banshy
     def init_handlers
       play_handler
       pause_handler
+      next_handler
+      previous_handler
       progress_control_behavior
       menu_bar_handler
+      volume_handler
+      random_forward_handler
+      automatic_forward_handler
+    end
+
+    def automatic_forward_handler
+      automatic_forward.signal_connect 'toggled' do |button|
+        if button.active?
+          @automatic_forwarder.start
+        else
+          @automatic_forwarder.stop
+        end
+      end
+    end
+
+    def random_forward_handler
+      random_next.signal_connect 'toggled' do |button|
+        @random_forward = button.active?
+      end
     end
 
     def set_time_label
@@ -116,6 +146,34 @@ module Banshy
     def pause_handler
       button_pause.signal_connect 'clicked' do
         pause_behavior
+      end
+    end
+
+    def previous_handler
+      button_previous.signal_connect 'clicked' do
+        @media_display.select_previous
+        play_behavior if @buffer.is_playing?
+      end
+    end
+
+    def next_handler
+      button_next.signal_connect 'clicked' do
+        next_behavior
+      end
+    end
+
+    def next_behavior
+      if @random_forward
+        @media_display.select_next_random
+      else
+        @media_display.select_next
+      end
+      play_behavior if @buffer.is_playing?
+    end
+
+    def volume_handler
+      volume_control.signal_connect 'value-changed' do
+        @buffer.set_volume volume_control.value if @buffer.is_playing?
       end
     end
 

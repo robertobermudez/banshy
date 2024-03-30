@@ -14,9 +14,9 @@ module Banshy
       if @dialog.run == Gtk::ResponseType::ACCEPT
         paths = dialog.filenames
         filter = @options_box.active_iter.get_value(0).downcase
-        puts MediaImporter.import(paths,
-                                  import_type: 'folder',
-                                  filter: filter)
+        MediaImporter.import(paths,
+                             import_type: 'folder',
+                             filter: filter)
         @dialog.close
       elsif @dialog.run == Gtk::ResponseType::CANCEL
         @dialog.close
