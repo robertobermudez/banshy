@@ -22,18 +22,25 @@ def connect_test_db
                                           database: PATH_DB_TEST)
 end
 
+def perform_migrations(action)
+  CreateVideoPlaylistVideoFilesTable.migrate action
+  CreateMusicPlaylistMusicFilesTable.migrate action
+  CreateVideoFileTable.migrate action
+  CreateMusicFileTable.migrate action
+  CreateVideoPlaylistTable.migrate action
+  CreateMusicPlayListTable.migrate action
+end
+
 namespace :migrate do
   task :up do
     require './migrations'
     connect_db
-    CreateVideoFileTable.migrate :up
-    CreateMusicFileTable.migrate :up
+    perform_migrations :up
   end
   task :down do
     require './migrations'
     connect_db
-    CreateVideoFileTable.migrate :down
-    CreateMusicFileTable.migrate :down
+    perform_migrations :down
   end
 end
 
@@ -41,14 +48,12 @@ namespace :migrate_test do
   task :up do
     require './migrations'
     connect_test_db
-    CreateVideoFileTable.migrate :up
-    CreateMusicFileTable.migrate :up
+    perform_migrations :up
   end
   task :down do
     require './migrations'
     connect_test_db
-    CreateVideoFileTable.migrate :down
-    CreateMusicFileTable.migrate :down
+    perform_migrations :down
   end
 end
 
