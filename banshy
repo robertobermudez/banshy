@@ -18,7 +18,8 @@ FileUtils.mkdir_p PATH_FILES
 
 ActiveRecord::Base.establish_connection(
   adapter: 'sqlite3',
-  database: File.join(PATH_FILES, 'data.db')
+  database: File.join(PATH_FILES, 'data.db'),
+  pool: 50
 )
 
 at_exit do
@@ -27,4 +28,4 @@ at_exit do
 end
 
 app = Banshy::Application.new
-puts app.run
+app.run
