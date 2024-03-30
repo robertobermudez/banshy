@@ -4,8 +4,14 @@
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkAdjustment" id="progress_adjustement">
     <property name="upper">100</property>
-    <property name="step-increment">1</property>
+    <property name="step-increment">0.5</property>
     <property name="page-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="volume_adjustement">
+    <property name="upper">1</property>
+    <property name="step-increment">0.01</property>
+    <property name="page-increment">0.01</property>
+    <property name="page-size">0.01</property>
   </object>
   <template class="BanshyApplicationWindow" parent="GtkApplicationWindow">
     <property name="can-focus">False</property>
@@ -32,12 +38,6 @@
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkSeparatorMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                    </child>
-                    <child>
                       <object class="GtkMenuItem" id="open_file_option">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -55,6 +55,12 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkMenuItem" id="quit_option">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -67,49 +73,48 @@
               </object>
             </child>
             <child>
-              <object class="GtkMenuItem">
+              <object class="GtkMenuItem" id="playback_menu">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
-                <property name="label" translatable="yes">_Edit</property>
+                <property name="label" translatable="yes">Playback</property>
                 <property name="use-underline">True</property>
                 <child type="submenu">
                   <object class="GtkMenu">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
                     <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-cut</property>
+                      <object class="GtkRadioMenuItem" id="sequential_next">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Sequential</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
+                        <property name="active">True</property>
+                        <property name="draw-as-radio">True</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-copy</property>
+                      <object class="GtkRadioMenuItem" id="random_next">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Random</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
+                        <property name="draw-as-radio">True</property>
+                        <property name="group">sequential_next</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-paste</property>
+                      <object class="GtkSeparatorMenuItem">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
                       </object>
                     </child>
                     <child>
-                      <object class="GtkImageMenuItem">
-                        <property name="label">gtk-delete</property>
+                      <object class="GtkCheckMenuItem" id="automatic_forward">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Automatic Fd</property>
                         <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
+                        <property name="active">True</property>
                       </object>
                     </child>
                   </object>
@@ -160,12 +165,13 @@
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <child>
-              <object class="GtkSearchEntry">
+              <object class="GtkSearchEntry" id="media_search">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="primary-icon-name">edit-find-symbolic</property>
                 <property name="primary-icon-activatable">False</property>
                 <property name="primary-icon-sensitive">False</property>
+                <property name="placeholder-text" translatable="yes">Esc to stop searching</property>
               </object>
               <packing>
                 <property name="left-attach">3</property>
@@ -178,7 +184,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <child>
-                  <object class="GtkButton" id="button_rewind">
+                  <object class="GtkButton" id="button_previous">
                     <property name="visible">True</property>
                     <property name="can-focus">True</property>
                     <property name="focus-on-click">False</property>
@@ -267,19 +273,22 @@
               </packing>
             </child>
             <child>
-              <object class="GtkVolumeButton" id="button_volume">
+              <object class="GtkVolumeButton" id="volume_control">
+                <property name="use-action-appearance">True</property>
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="focus-on-click">False</property>
                 <property name="receives-default">True</property>
                 <property name="relief">none</property>
                 <property name="orientation">vertical</property>
+                <property name="value">0.01</property>
+                <property name="adjustment">volume_adjustement</property>
                 <property name="icons">audio-volume-muted-symbolic
 audio-volume-high-symbolic
 audio-volume-low-symbolic
 audio-volume-medium-symbolic</property>
                 <child internal-child="plus_button">
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="plus_button">
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="halign">center</property>
@@ -288,7 +297,7 @@ audio-volume-medium-symbolic</property>
                   </object>
                 </child>
                 <child internal-child="minus_button">
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="minus_button">
                     <property name="can-focus">True</property>
                     <property name="receives-default">True</property>
                     <property name="halign">center</property>
