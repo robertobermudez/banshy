@@ -4,6 +4,8 @@ require 'gstreamer'
 require 'glib2'
 require 'sqlite3'
 require 'active_record'
+require 'logger'
+require 'singleton'
 
 APP_ROOT_PATH = File.expand_path(__dir__).freeze
 PATH_FILES = '~/.banshy/'.freeze
