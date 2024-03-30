@@ -6,6 +6,10 @@ module Banshy
       @music = Banshy::MusicFile.new(path: @music_path)
     end
 
+    def before_setup
+      MusicFile.destroy_all
+    end
+
     def test_creates_media_file_object
       assert @music.is_a?(Banshy::MusicFile)
     end
@@ -19,12 +23,17 @@ module Banshy
     end
 
     def test_can_be_stored_in_database
-      MusicFile.destroy_all
       assert @music.save == true
     end
 
     def test_returns_file_source
       assert @music.src_path == "file://#{@music_path}"
+    end
+
+    def test_can_be_added_to_favourites
+      @music.save
+      @music.update(favourite: true)
+      assert MusicFile.first.favourite == true
     end
   end
 end

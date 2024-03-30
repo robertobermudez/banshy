@@ -6,6 +6,10 @@ module Banshy
       @video = Banshy::VideoFile.new(path: @video_path)
     end
 
+    def before_setup
+      VideoFile.destroy_all
+    end
+
     def test_creates_media_file_object
       assert @video.is_a?(Banshy::VideoFile)
     end
@@ -24,7 +28,13 @@ module Banshy
     end
 
     def test_returns_file_source
-      assert @video.src_path == 'file:///home/mordrec/workspace/banshy/test/media/recorte.mp4'
+      assert @video.src_path == "file://#{@video_path}"
+    end
+
+    def test_can_be_added_to_favourites
+      @video.save
+      @video.update(favourite: true)
+      assert VideoFile.first.favourite == true
     end
   end
 end
