@@ -1,4 +1,3 @@
-require 'pry'
 module Banshy
   # Base class for media files (mp3,mp4 ...)
   class MediaFile < ActiveRecord::Base
@@ -10,9 +9,14 @@ module Banshy
 
     after_initialize do
       self.duration ||= get_metadata(path)['duration'].split('.').first
-      self.name ||= File.basename(get_metadata(path)['done discovering file'],
-                                  '.*')
+      self.name ||= CGI.unescape(File.basename(get_metadata(path)['done discovering file'],
+                                  '.*')).gsub('%20', ' ')
     end
+
+    before_save do
+      self.favourite ||= false
+    end
+
     def src_path
       "file://#{self.path}"
     end
