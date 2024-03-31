@@ -25,12 +25,14 @@ module Banshy
 
     attr_reader :playing, :file, :ready, :music_pip, :video_pip
 
-    def initialize
+    def initialize(media_list_display)
       super()
       @pipeline = nil
       @file = nil
       @ready = false
       @playing = false
+      @media_list_display = media_list_display
+      popup_handler
     end
 
     def load(file)
@@ -118,6 +120,11 @@ module Banshy
 
     def finished?
       current_position == duration_seconds && duration_seconds != -1
+    end
+
+    def popup_handler
+      add_events Gdk::EventMask::BUTTON_PRESS_MASK
+      @media_list_display.init_popup_menu self
     end
 
     private

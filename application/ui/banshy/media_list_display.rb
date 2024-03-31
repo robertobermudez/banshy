@@ -77,21 +77,21 @@ module Banshy
       end
     end
 
+    def init_popup_menu(another_widget = media_list_box)
+      another_widget.add_events Gdk::EventMask::BUTTON_PRESS_MASK
+      another_widget.signal_connect 'button_press_event' do |widget, event|
+        if event.button == 3
+          MediaBoxPopupMenu.new(selected_row, media_list_box, queue).popup(nil, nil, event.button, event.time) if selected
+        end
+      end
+    end
+
     private
 
     def clean_display
       media_list_box.unselect_all
       @selected = nil
       media_list_box.children.each { |child| media_list_box.remove child }
-    end
-
-    def init_popup_menu
-      media_list_box.add_events Gdk::EventMask::BUTTON_PRESS_MASK
-      media_list_box.signal_connect 'button_press_event' do |widget, event|
-        if event.button == 3
-          MediaBoxPopupMenu.new(selected_row, media_list_box, queue).popup(nil, nil, event.button, event.time) if selected
-        end
-      end
     end
   end
 end

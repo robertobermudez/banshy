@@ -40,9 +40,9 @@ module Banshy
     end
 
     def attach_components
-      @buffer = Banshy::MediaPlayer.new
       @tree_view = MediaTreeView.new self
       @media_display = MediaListDisplay.new(media_search)
+      @buffer = Banshy::MediaPlayer.new @media_display
       @automatic_forwarder = AutomaticForwarder.new(self, buffer)
       grid_2.attach @tree_view, 0, 0, 1, 1
       grid_2.attach @media_display, 1, 0, 1, 1
