@@ -3,6 +3,7 @@ module Banshy
   class VideoPlaylistTest < Minitest::Test
     def setup
       @video_path = File.join APP_ROOT_PATH, 'test/media/recorte.mp4'
+      puts @video_path
       @video = Banshy::VideoFile.new(path: @video_path)
       @pl_name = 'new'
       @pl = Banshy::VideoPlaylist.new name: @pl_name
