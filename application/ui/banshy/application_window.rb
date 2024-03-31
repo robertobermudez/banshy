@@ -21,6 +21,7 @@ module Banshy
         bind_template_child 'random_next'
         bind_template_child 'automatic_forward'
         bind_template_child 'media_search'
+        bind_template_child 'quit_option'
       end
     end
 
@@ -62,6 +63,7 @@ module Banshy
       volume_handler
       random_forward_handler
       automatic_forward_handler
+      close_app
     end
 
     def automatic_forward_handler
@@ -188,6 +190,12 @@ module Banshy
         @buffer.play if was_playing
         @buffer.move_to_position progress_control.value
         was_playing = nil
+      end
+    end
+
+    def close_app
+      quit_option.signal_connect 'select' do
+        exit
       end
     end
 
