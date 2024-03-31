@@ -2,12 +2,12 @@ require_relative './test_helper'
 module Banshy
   class MediaImporterTest < Minitest::Test
     def setup
-      @video_path = '/home/mordrec/workspace/banshy/test/media/recorte.mp4'
-      @music_path = '/home/mordrec/workspace/banshy/test/media/better-day-186374.mp3'
-      @fake_video = '/home/mordrec/workspace/banshy/test/media/fake_video.mp4'
-      @fake_music = '/home/mordrec/workspace/banshy/test/media/fake_music.mp3'
-      @folder = '/home/mordrec/workspace/banshy/test/media'
-      @folder2 = '/home/mordrec/workspace/banshy/test/media/media2'
+      @video_path =  File.join APP_ROOT_PATH, 'test/media/recorte.mp4'
+      @music_path = File.join APP_ROOT_PATH, 'test/media/better-day-186374.mp3'
+      @fake_video = File.join APP_ROOT_PATH, 'test/media/fake_video.mp4'
+      @fake_music = File.join APP_ROOT_PATH, 'test/media/fake_music.mp3'
+      @folder = File.join APP_ROOT_PATH, 'test/media'
+      @folder2 = File.join APP_ROOT_PATH, 'test/media/media2'
     end
 
     def before_setup

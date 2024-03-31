@@ -2,7 +2,7 @@ require_relative './test_helper'
 module Banshy
   class VideoPlaylistTest < Minitest::Test
     def setup
-      @video_path = '/home/mordrec/workspace/banshy/test/media/recorte.mp4'
+      @video_path = File.join APP_ROOT_PATH, 'test/media/recorte.mp4'
       @video = Banshy::VideoFile.new(path: @video_path)
       @pl_name = 'new'
       @pl = Banshy::VideoPlaylist.new name: @pl_name

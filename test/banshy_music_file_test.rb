@@ -2,7 +2,7 @@ require_relative './test_helper'
 module Banshy
   class MusicFileTest < Minitest::Test
     def setup
-      @music_path = '/home/mordrec/workspace/banshy/test/media/better-day-186374.mp3'
+      @music_path = File.join APP_ROOT_PATH, 'test/media/better-day-186374.mp3'
       @music = Banshy::MusicFile.new(path: @music_path)
     end
 
