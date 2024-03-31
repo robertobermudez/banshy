@@ -30,6 +30,7 @@ jobs:
       run: |
         sudo apt-get update 
         sudo apt-get install -y build-essential sqlite3 ruby-dev libgirepository1.0-dev libgtk-3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libunwind-dev xvfb
+        sudo apt install gstreamer1.0-plugins-base gstreamer1.0-plugins-good
 
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
