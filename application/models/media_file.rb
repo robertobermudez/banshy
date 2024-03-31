@@ -32,7 +32,6 @@ module Banshy
     private
 
     def get_metadata(path)
-      puts `gst-discoverer-1.0 "#{path}"`
       metadata = `gst-discoverer-1.0 "#{path}"`.split("\n").map(&:strip)
       metadata_hash = {}
       metadata.each do |line|
