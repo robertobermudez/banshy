@@ -28,9 +28,8 @@ jobs:
     - uses: actions/checkout@v3
     - name: Install dependencies
       run: |
-        sudo apt-get update sqlite3
-        sudo apt-get install build-essential
-        sudo apt-get install libgirepository1.0-dev
+        sudo apt-get update 
+        sudo apt-get install build-essential sqlite3 ruby-dev libgirepository1.0-dev
 
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
