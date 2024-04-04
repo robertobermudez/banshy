@@ -29,7 +29,6 @@ echo "gem: --install-dir $GEM_PATH"
 export GEM_PATH
 export GEM_HOME
 export PATH=$PATH:$GEM_HOME'/bin'
-
 gem install bundler
 bundle install
 bundle exec rake migrate:up
@@ -40,6 +39,7 @@ Encoding=UTF-8
 Version=0.1
 Type=Application
 Terminal=false
-Exec=${PREFIX}/banshy/banshy.sh
+Exec=env GEM_PATH=$GEM_PATH env GEM_HOME=$GEM_HOME ${PREFIX}/banshy/banshy.sh
+Name=Banshy!
 Icon=${PREFIX}/banshy/resources/banshy_logo.png
 EOF
