@@ -6,7 +6,7 @@ require 'sqlite3'
 require 'active_record'
 require 'logger'
 require 'singleton'
-
+require 'rake'
 
 APP_ROOT_PATH = File.expand_path(__dir__).freeze
 PATH_FILES = File.join(ENV['HOME'], '/.banshy/').freeze
