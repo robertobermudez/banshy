@@ -6,35 +6,38 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  DEBIAN_FRONTEND: "noninteractive"
+  TZ: "Etc/UTC"
+
 jobs:
   build_executable:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v3
-      name: setup tebako
-    - run: |
-        export DEBIAN_FRONTEND=noninteractive
-        export TZ=Etc/UTC
+    -  uses: actions/checkout@v3
+    -  name: install dependencies
+       run: |
+         apt-get -y update
+         apt-get install -y software-properties-common
+         add-apt-repository -y ppa:ubuntu-toolchain-r/test
+         apt-get install -y gcc-10 g++-10
+         apt-get install -y curl git ruby ruby-dev pkg-config bison flex make autoconf
+         curl https://apt.kitware.com/kitware-archive.sh | bash
+         apt-get install -y cmake
 
-        apt-get update
-        apt-get install -y software-properties-common
-        add-apt-repository -y ppa:ubuntu-toolchain-r/test
-        apt-get install -y gcc-10 g++-10
+         apt-get -y install sudo git curl build-essential pkg-config bison flex autoconf \
+         binutils-dev libevent-dev acl-dev libfmt-dev libjemalloc-dev libiberty-dev    \
+         libdouble-conversion-dev liblz4-dev liblzma-dev libssl-dev libunwind-dev      \
+         libboost-filesystem-dev libboost-program-options-dev libboost-system-dev      \
+         libboost-iostreams-dev  libboost-date-time-dev libboost-context-dev           \
+         libboost-regex-dev libboost-thread-dev libbrotli-dev libdwarf-dev libelf-dev  \
+         libgoogle-glog-dev libffi-dev libgdbm-dev libyaml-dev libncurses-dev          \
+         libreadline-dev libutfcpp-dev libncurses-dev libreadline-dev gcc-10 g++-10    \
+         ruby-dev ruby-bundler
 
-        apt-get install -y curl git ruby ruby-dev pkg-config bison flex make autoconf
-        curl https://apt.kitware.com/kitware-archive.sh | bash
-        apt-get install -y cmake
+         gem install tebako
+    - name: Setup tebako
+      run: tebako setup -R 3.2.3
 
-        apt-get -y install sudo git curl build-essential pkg-config bison flex autoconf \
-        binutils-dev libevent-dev acl-dev libfmt-dev libjemalloc-dev libiberty-dev    \
-        libdouble-conversion-dev liblz4-dev liblzma-dev libssl-dev libunwind-dev      \
-        libboost-filesystem-dev libboost-program-options-dev libboost-system-dev      \
-        libboost-iostreams-dev  libboost-date-time-dev libboost-context-dev           \
-        libboost-regex-dev libboost-thread-dev libbrotli-dev libdwarf-dev libelf-dev  \
-        libgoogle-glog-dev libffi-dev libgdbm-dev libyaml-dev libncurses-dev          \
-        libreadline-dev libutfcpp-dev libncurses-dev libreadline-dev gcc-10 g++-10    \
-        ruby-dev ruby-bundler
-
-        gem install tebako
-     name: setup tebako
-     - run: tebako setup -R 3.2.3
+    - name: build binary
+      run: tebako  press --root='.' --entry=banshy --output=release
