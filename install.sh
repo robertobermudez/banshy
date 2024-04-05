@@ -25,7 +25,7 @@ GEM_PATH="${PREFIX}/banshy/lib/gems"
 GEM_HOME="${PREFIX}/banshy/lib/gems"
 
 echo "gem: --install-dir $GEM_PATH"
-
+RUBY_PATH=$(which ruby)
 export GEM_PATH
 export GEM_HOME
 export PATH=$PATH:$GEM_HOME'/bin'
@@ -39,7 +39,7 @@ Encoding=UTF-8
 Version=0.1
 Type=Application
 Terminal=false
-Exec=env GEM_PATH=$GEM_PATH env GEM_HOME=$GEM_HOME ${PREFIX}/banshy/banshy.sh
+Exec=${PREFIX}/banshy/banshy.sh $RUBY_PATH
 Name=Banshy!
 Icon=${PREFIX}/banshy/resources/banshy_logo.png
 EOF

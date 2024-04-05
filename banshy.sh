@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 PREFIX=$HOME
 GEM_PATH="${PREFIX}/banshy/lib/gems"
 GEM_HOME="${PREFIX}/banshy/lib/gems"
@@ -23,4 +25,6 @@ export PATH=$PATH:$GEM_HOME'/bin'
 
 ruby --version
 
-$(ruby $PREFIX/banshy/banshy.rb)
+RUBY_PATH="${1:-$(which ruby)}"
+
+$($RUBY_PATH $PREFIX/banshy/banshy.rb)
