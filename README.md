@@ -10,11 +10,11 @@ Ruby: Make sure you have Ruby installed on your system. You can download it from
 GTK3: Ensure that GTK3 is installed. If not, you can install it using your system's package manager. For example, on Ubuntu, you can install it with the following command:
     
 ```bash
-sudo apt-get install libgtk-3-dev
+sudo apt-get install libgtk-3-dev sqlite3 ruby-dev libgirepository1.0-dev libgtk-3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev ruby-full ruby-bundler
 ```
 GStreamer: Install GStreamer, which is used for multimedia playback. Again, you can use your system's package manager to install it. For example, on Ubuntu:
 ```bash
-sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-libav
 ```
 
 Clone into your home folder
@@ -25,9 +25,7 @@ git clone https://github.com/robertobermudez/banshy.git
 
 ```bash
 cd banshy
-bundle exec install
-bundle exec rake migrate:up
-./banshy
+./install
 ```
 
 
