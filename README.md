@@ -25,7 +25,7 @@ git clone https://github.com/robertobermudez/banshy.git
 
 ```bash
 cd banshy
-./install
+./install.sh
 ```
 
 Please note that this app is in a very early stage of development. Any feedback or comment is more than welcome!
