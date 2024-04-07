@@ -28,6 +28,7 @@ cd banshy
 ./install
 ```
 
+Please note that this app is in a very early stage of development. Any feedback or comment is more than welcome!
 
 ### Skeleton of the project
 .
