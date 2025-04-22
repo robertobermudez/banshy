@@ -69,7 +69,7 @@ GEM
       ruby-progressbar
     mutex_m (0.2.0)
     native-package-installer (1.1.9)
-    nokogiri (1.16.5-x86_64-linux)
+    nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     pango (4.2.1)
       cairo-gobject (= 4.2.1)
@@ -87,7 +87,7 @@ GEM
     pry-rescue (1.6.0)
       interception (>= 0.5)
       pry (>= 0.12.0)
-    racc (1.7.3)
+    racc (1.8.1)
     rake (13.1.0)
     red-colors (0.4.0)
       json
